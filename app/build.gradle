@@ -14,8 +14,19 @@ def apikeyProperties = new Properties()
 apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
 
 android {
+
+    signingConfigs {
+        release {
+            storeFile file('C:\\Users\\lucasamartins\\StudioProjects\\pexelsApplication\\store\\pexels_app.jks')
+            storePassword '88262135'
+            keyAlias 'pexels_app'
+            keyPassword '88262135'
+        }
+    }
+
     namespace 'com.liebxsantos.pexelswallpapersapp'
     compileSdk 33
+
 
     defaultConfig {
         applicationId "com.liebxsantos.pexelswallpapersapp"
@@ -32,7 +43,20 @@ android {
     }
 
     buildTypes {
+
+        debug{
+            applicationIdSuffix '.debug'
+            debuggable true
+        }
+
+        staging{
+            initWith debug
+            minifyEnabled true
+            applicationIdSuffix '.debug'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro', 'proguard-rules-stanging.pro'
+        }
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -56,6 +80,8 @@ android {
 }
 
 dependencies {
+
+    implementation project(':core')
 
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
